@@ -252,12 +252,10 @@ class _CodeViewState extends State<CodeView>
       if (scriptSource.length < 500000) {
         final highlighted = script.highlighter.highlight(context);
 
-        // Look for [TextSpan]s which only contain '\n' to manually break the
+        // Look for [InlineSpan]s which only contain '\n' to manually break the
         // output from the syntax highlighter into individual lines.
         var currentLine = <InlineSpan>[];
         highlighted.visitChildren((span) {
-          // TODO(elliette): Switch to using InlineSpans instead of TextSpans so
-          // type-casting isn't necessary.
           currentLine.add(span);
           if (span.toPlainText() == '\n') {
             lines.add(
@@ -417,8 +415,6 @@ class _CodeViewState extends State<CodeView>
       },
     );
   }
-
-  InlineSpan span(InlineSpan span) => span;
 
   Widget buildFileSearchField() {
     return ElevatedCard(
@@ -912,8 +908,6 @@ class _LineItemState extends State<LineItem>
   }
 
   TextSpan searchAwareLineContents() {
-    // TODO(elliette): Switch to using TextSpans instead of InlineSpans so
-    // type-casting isn't necessary.
     final children = widget.lineContents.children;
     if (children == null) return const TextSpan();
 
